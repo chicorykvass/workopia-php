@@ -1,0 +1,7 @@
+tailwind.config.js
+*workopia-theme
+*vendor
+*node_modules
+*config/db.php
+*.env
+*.vscode
