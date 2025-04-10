@@ -59,8 +59,6 @@ function inspect($value) {
  * @return void
  */
 function inspectAndDie($value) {
-  echo '<pre>';
-  var_dump($value);
-  echo '</pre>';
+  inspect($value);
   die;
 }
