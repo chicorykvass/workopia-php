@@ -106,5 +106,4 @@
   </div>
 </section>
 
-<?= loadPartial('bottom-banner') ?>
 <?= loadPartial('footer') ?>

@@ -75,7 +75,8 @@ class Router {
 
   /**
    * Route for error
-   * @param int $errcode
+   * 
+   * @param int $errCode
    * @return void
    */
   public function error($errCode = 404) {
