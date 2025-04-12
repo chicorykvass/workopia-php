@@ -78,18 +78,6 @@ class Router {
       }
     }
 
-    $this->error();
-  }
-
-  /**
-   * Route for error
-   * 
-   * @param int $errCode
-   * @return void
-   */
-  public function error($errCode = 404) {
-    http_response_code($errCode);
-    loadView("error/$errCode");
-    exit;
+    http_error();
   }
 }
