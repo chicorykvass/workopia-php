@@ -1,0 +1,16 @@
+{
+  "name": "chicorykvass/workopia-php",
+  "description": "Job listing application",
+  "authors": [
+    {
+      "name": "Artyom Gerasimov",
+      "email": "notproviding@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  }
+}
