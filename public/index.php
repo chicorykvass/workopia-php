@@ -3,8 +3,6 @@
 require __DIR__ . '/../vendor/autoload.php';
 require '../helpers.php';
 
-use Framework\Router;
-
 // spl_autoload_register(function ($class) {
 //   $path = basePath("Framework/{$class}.php");
 //   if (file_exists($path)) {
@@ -13,7 +11,7 @@ use Framework\Router;
 // });
 
 // Instantiate the router
-$router = new Router;
+$router = new Framework\Router;
 
 // Get routes
 require basePath('routes.php');
