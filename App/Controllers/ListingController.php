@@ -33,7 +33,7 @@ class ListingController extends Controller {
     extract($params);
 
     if (!($listing = $this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
-      ErrorController::notFound();
+      ErrorController::notFound('Listing Not Found');
       exit;
     }
 
