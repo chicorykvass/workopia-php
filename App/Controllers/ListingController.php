@@ -29,11 +29,10 @@ class ListingController extends Controller {
    *
    * @return void
    */
-  public function show() {
-    $id = $_GET['id'] ?? null;
-    $listing = null;
+  public function show($params) {
+    extract($params);
 
-    if (!$id || !($listing = $this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
+    if (!($listing = $this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
       ErrorController::notFound();
       exit;
     }
