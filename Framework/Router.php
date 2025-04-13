@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use App\Controllers\ErrorController;
+
 class Router {
   protected $routes = [];
 
@@ -87,6 +89,6 @@ class Router {
       }
     }
 
-    http_error();
+    ErrorController::notFound();
   }
 }

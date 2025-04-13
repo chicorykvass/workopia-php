@@ -63,15 +63,3 @@ function inspectAndDie($value) {
   inspect($value);
   die;
 }
-
-/**
- * Route for HTTP error
- * 
- * @param int $errCode
- * @return void
- */
-function http_error($errCode = 404) {
-  http_response_code($errCode);
-  loadView("error/{$errCode}");
-  exit;
-}

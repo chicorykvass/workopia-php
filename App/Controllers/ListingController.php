@@ -34,7 +34,8 @@ class ListingController extends Controller {
     $listing = null;
 
     if (!$id || !($listing = $this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
-      http_error();
+      ErrorController::notFound();
+      exit;
     }
 
     loadView('listings/show', ['listing' => $listing]);
