@@ -63,3 +63,41 @@ function inspectAndDie($value) {
   inspect($value);
   die;
 }
+
+/**
+ * Sanitize data
+ *
+ * @param string $dirty
+ * @return string
+ */
+function sanitize($dirty) {
+  return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
+}
+
+/**
+ * Truncate text to desired length
+ *
+ * @param string $text
+ * @param integer $chars
+ * @return string
+ */
+function truncate($text, $chars = 25) {
+  if (strlen($text) <= $chars) {
+    return $text;
+  }
+  $text = $text . ' ';
+  $text = substr($text, 0, $chars);
+  $text = substr($text, 0, strrpos($text, ' '));
+  $text = $text . '...';
+  return $text;
+}
+
+/**
+ * Redirect to URL
+ *
+ * @param string $url
+ * @return void
+ */
+function redirect($url) {
+  header("Location: {$url}");
+}

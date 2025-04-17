@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Framework\Database;
 
 class Controller {
-  protected $db, $params;
+  protected $db;
 
   public function __construct() {
     $config = require basePath('config/db.php');

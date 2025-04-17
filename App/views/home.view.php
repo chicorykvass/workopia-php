@@ -14,7 +14,7 @@
             <div>
               <h2 class="text-xl font-semibold"><?= $listing->title ?></h2>
               <p class="text-gray-700 text-lg mt-2">
-                <?= $listing->description ?>
+                <?= truncate($listing->description, 100) ?>
               </p>
             </div>
             <ul class="my-4 bg-gray-100 p-4 rounded">
@@ -24,9 +24,11 @@
                 <!-- <span
                   class="text-xs bg-blue-500 text-white rounded-full px-2 py-1 ml-2">Local</span> -->
               </li>
-              <li class="mb-2">
-                <strong>Tags:</strong> <?= ucwords($listing->tags) ?>
-              </li>
+              <?php if ($listing->tags) : ?>
+                <li class="mb-2">
+                  <strong>Tags:</strong> <?= ucwords($listing->tags) ?>
+                </li>
+              <?php endif; ?>
             </ul>
             <a href="listing/<?= $listing->id ?>"
               class="block w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
