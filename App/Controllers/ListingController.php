@@ -74,6 +74,7 @@ class ListingController extends Controller {
   /**
    * Show listing details
    *
+   * @param array $params
    * @return void
    */
   public function show($params) {
@@ -85,5 +86,22 @@ class ListingController extends Controller {
     }
 
     loadView('listings/show', ['listing' => $listing]);
+  }
+
+  /**
+   * Delete a listing
+   *
+   * @param array $params
+   * @return void
+   */
+  public function destroy($params) {
+    $id = $params['id'];
+
+    if (!$id || !($this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
+      ErrorController::notFound('Listing Not Found');
+    }
+
+    $this->db->query('DELETE FROM listings WHERE id=?', [$id]);
+    redirect('/listings');
   }
 }

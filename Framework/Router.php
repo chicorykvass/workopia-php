@@ -77,7 +77,7 @@ class Router {
    * @return void
    */
   public function route($uri) {
-    $requestMethod = $_SERVER['REQUEST_METHOD'];
+    $requestMethod = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
     foreach ($this->routes as $route) {
       // Split the current URI into segments
@@ -117,16 +117,6 @@ class Router {
         }
       }
     }
-
-    //   if ($route['uri'] === $uri && $route['method'] === $method) {
-    // $controller = "App\\Controllers\\{$route['controller']}";
-    // $controllerMethod = $route['controllerMethod'];
-
-    // // Instantiate the controller and call the method
-    // $controllerInstance = new $controller();
-    // $controllerInstance->$controllerMethod();
-    // return;
-    //   }
 
     ErrorController::notFound();
   }
