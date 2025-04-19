@@ -13,7 +13,7 @@
             <div>
               <h2 class="text-xl font-semibold"><?= $listing->title ?></h2>
               <p class="text-gray-700 text-lg mt-2">
-                <?= truncate($listing->description, 100) ?>
+                <?= truncate($listing->description) ?>
               </p>
             </div>
             <ul class="my-4 bg-gray-100 p-4 rounded">

@@ -97,8 +97,9 @@ class ListingController extends Controller {
   public function destroy($params) {
     $id = $params['id'];
 
-    if (!$id || !($this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
+    if (!$id || !($this->db->query('SELECT id FROM listings WHERE id=?', [$id])->fetch())) {
       ErrorController::notFound('Listing Not Found');
+      exit;
     }
 
     $this->db->query('DELETE FROM listings WHERE id=?', [$id]);
