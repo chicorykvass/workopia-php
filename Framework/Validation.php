@@ -42,7 +42,7 @@ class Validation {
    * @return bool
    */
   public static function match($value1, $value2) {
-    if (Validation::string($value1) && Validation::string($value2)) {
+    if (self::string($value1) && self::string($value2)) {
       $value1 = trim($value1);
       $value2 = trim($value2);
       return $value1 === $value2;

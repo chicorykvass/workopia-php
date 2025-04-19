@@ -103,6 +103,10 @@ class ListingController extends Controller {
     }
 
     $this->db->query('DELETE FROM listings WHERE id=?', [$id]);
+
+    // Set flash message
+    $_SESSION['success_message'] = 'Listing deleted successfully';
+
     redirect('/listings');
   }
 }
