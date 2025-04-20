@@ -49,6 +49,8 @@ class ListingController extends Controller {
     // Validate the input data
     extract(Validation::fields());
 
+    $listingData['user_id'] = rand(1, 5);
+
     // If there are errors, reload view with errors
     if (!empty($errors)) {
       loadView('/listings/create', ['errors' => $errors, 'data' => $listingData]);

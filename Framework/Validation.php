@@ -61,8 +61,6 @@ class Validation {
 
     $listingData = array_map('sanitize', $listingData);
 
-    $listingData['user_id'] = rand(1, 5);
-
     foreach ($requiredFields as $field) {
       if (empty($listingData[$field]) or !Validation::string($listingData[$field])) {
         $errors[$field] = ucfirst($field) . ' is required';
