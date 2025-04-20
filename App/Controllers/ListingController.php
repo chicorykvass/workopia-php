@@ -161,7 +161,7 @@ class ListingController extends Controller {
 
       $_SESSION['success_message'] = 'Listing updated successfully';
 
-      redirect('/listings');
+      redirect("/listings/{$id}");
     }
   }
 }
