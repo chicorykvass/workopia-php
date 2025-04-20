@@ -49,4 +49,26 @@ class Validation {
     }
     return false;
   }
+
+  public static function fields() {
+    $allowedFields = ['title', 'description', 'salary', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits', 'tags'];
+
+    $requiredFields = ['title', 'description', 'salary', 'city', 'state', 'email'];
+
+    $errors = [];
+
+    $listingData = array_intersect_key($_POST, array_flip($allowedFields));
+
+    $listingData = array_map('sanitize', $listingData);
+
+    $listingData['user_id'] = rand(1, 5);
+
+    foreach ($requiredFields as $field) {
+      if (empty($listingData[$field]) or !Validation::string($listingData[$field])) {
+        $errors[$field] = ucfirst($field) . ' is required';
+      }
+    }
+
+    return ['listingData' => $listingData, 'errors' => $errors];
+  }
 }

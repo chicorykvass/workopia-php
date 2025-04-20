@@ -7,6 +7,20 @@ use Framework\Validation;
 class ListingController extends Controller {
 
   /**
+   * Check if id is in DB
+   *
+   * @param int $id
+   * @return void
+   */
+  private function check($id) {
+    if (!$id || !($listing = $this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
+      ErrorController::notFound('Listing Not Found');
+      exit;
+    }
+    return $listing;
+  }
+
+  /**
    * Load listings page
    *
    * @return void
@@ -32,33 +46,18 @@ class ListingController extends Controller {
    * @return void
    */
   public function store() {
-    $allowedFields = ['title', 'description', 'salary', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits', 'tags'];
-
-    $requiredFields = ['title', 'description', 'salary', 'city', 'state', 'email'];
-
-    $errors = [];
-
-    $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
-
-    $newListingData = array_map('sanitize', $newListingData);
-
-    $newListingData['user_id'] = rand(1, 5);
-
-    foreach ($requiredFields as $field) {
-      if (empty($newListingData[$field]) or !Validation::string($newListingData[$field])) {
-        $errors[$field] = ucfirst($field) . ' is required';
-      }
-    }
+    // Validate the input data
+    extract(Validation::fields());
 
     // If there are errors, reload view with errors
     if (!empty($errors)) {
-      loadView('/listings/create', ['errors' => $errors, 'data' => $newListingData]);
+      loadView('/listings/create', ['errors' => $errors, 'data' => $listingData]);
     } else {
       // Filter input data array to delete empty fields
-      $newListingData = array_filter($newListingData);
+      $listingData = array_filter($listingData);
 
       // Create array of field names to insert into DB
-      $qFields = array_keys($newListingData);
+      $qFields = array_keys($listingData);
 
       // Create the SQL statement
       $qVals = ':' . implode(', :', $qFields);
@@ -66,7 +65,7 @@ class ListingController extends Controller {
       $sql = "INSERT INTO listings ({$qFields}) VALUES ({$qVals})";
 
       // Execute the SQL statement
-      $this->db->query($sql, $newListingData);
+      $this->db->query($sql, $listingData);
       redirect('/listings');
     }
   }
@@ -78,12 +77,8 @@ class ListingController extends Controller {
    * @return void
    */
   public function show($params) {
-    extract($params);
-
-    if (!($listing = $this->db->query('SELECT * FROM listings WHERE id=?', [$id])->fetch())) {
-      ErrorController::notFound('Listing Not Found');
-      exit;
-    }
+    // Check if id is in DB
+    $listing = $this->check($params['id']);
 
     loadView('listings/show', ['listing' => $listing]);
   }
@@ -97,10 +92,8 @@ class ListingController extends Controller {
   public function destroy($params) {
     $id = $params['id'];
 
-    if (!$id || !($this->db->query('SELECT id FROM listings WHERE id=?', [$id])->fetch())) {
-      ErrorController::notFound('Listing Not Found');
-      exit;
-    }
+    // Check if id is in DB
+    $this->check($id);
 
     $this->db->query('DELETE FROM listings WHERE id=?', [$id]);
 
@@ -108,5 +101,65 @@ class ListingController extends Controller {
     $_SESSION['success_message'] = 'Listing deleted successfully';
 
     redirect('/listings');
+  }
+
+  /**
+   * Show the listing edit form
+   *
+   * @param array $params
+   * @return void
+   */
+  public function edit($params) {
+    // Check if id is in DB
+    $listing = $this->check($params['id']);
+
+    loadView('listings/edit', ['listing' => (array) $listing]);
+  }
+
+  /**
+   * Update listing
+   * 
+   * @param array $params
+   * @return void
+   */
+  public function update($params) {
+    $id = $params['id'];
+
+    // Check if id is in DB
+    $oldListingData = (array) $this->check($id);
+
+    // Validate the input data
+    extract(Validation::fields());
+
+    // Add id to listing data array
+    $listingData['id'] = $id;
+
+    if (!empty($errors)) {
+      loadView("/listings/edit", ['errors' => $errors, 'listing' => $listingData]);
+    } else {
+      // Filter input data array to delete empty fields
+      $listingData = array_filter($listingData);
+
+      // Create SET directives
+      $qSet = $qVal = [];
+      foreach ($listingData as $field => $value) {
+        if ($oldListingData[$field] != $value) {
+          $qSet[] = "{$field}=:{$field}";
+          $qVal[$field] = $value;
+        }
+      }
+      $qSet = implode(', ', $qSet);
+      $qVal['id'] = $id;
+
+      // Create the SQL statement
+      $sql = "UPDATE listings SET {$qSet} WHERE id=:id";
+
+      // Execute the SQL statement
+      $this->db->query($sql, $qVal);
+
+      $_SESSION['success_message'] = 'Listing updated successfully';
+
+      redirect('/listings');
+    }
   }
 }

@@ -10,7 +10,7 @@ class ErrorController {
    * @param string $message
    * @return void
    */
-  public static function error($status, $message = 'Something Went Wrong') {
+  private static function error($status, $message = 'Something Went Wrong') {
     loadView('error', ['status' => $status, 'message' => $message]);
   }
 
