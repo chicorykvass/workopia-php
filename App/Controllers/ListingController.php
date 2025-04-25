@@ -47,13 +47,14 @@ class ListingController extends Controller {
    */
   public function store() {
     // Validate the input data
-    extract(Validation::fields());
+    extract(Validation::listingFields());
 
     $listingData['user_id'] = rand(1, 5);
 
     // If there are errors, reload view with errors
     if (!empty($errors)) {
       loadView('/listings/create', ['errors' => $errors, 'data' => $listingData]);
+      exit;
     } else {
       // Filter input data array to delete empty fields
       $listingData = array_filter($listingData);
@@ -131,7 +132,7 @@ class ListingController extends Controller {
     $oldListingData = (array) $this->check($id);
 
     // Validate the input data
-    extract(Validation::fields());
+    extract(Validation::listingFields());
 
     // Add id to listing data array
     $listingData['id'] = $id;
