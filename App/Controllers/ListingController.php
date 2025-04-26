@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Framework\Validation;
+use Framework\Session;
 
 class ListingController extends Controller {
 
@@ -49,7 +50,7 @@ class ListingController extends Controller {
     // Validate the input data
     extract(Validation::listingFields());
 
-    $listingData['user_id'] = rand(1, 5);
+    $listingData['user_id'] = Session::get('user')['id'];
 
     // If there are errors, reload view with errors
     if (!empty($errors)) {

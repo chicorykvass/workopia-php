@@ -138,4 +138,27 @@ class Validation {
 
     return ['userData' => $userData, 'errors' => $errors];
   }
+
+  /**
+   * Validate the user login fields
+   *
+   * @return array
+   */
+  public static function loginFields() {
+    $allowedFields = ['email', 'password'];
+
+    $errors = [];
+
+    $loginData = array_intersect_key($_POST, array_flip($allowedFields));
+
+    if (!self::email($loginData['email'])) {
+      $errors['email'] = 'Please enter valid email';
+    }
+
+    if (empty($loginData['password']) || !self::string($loginData['password'], 6, 50)) {
+      $errors['password'] = 'Password must be between 6 and 50 characters';
+    }
+
+    return ['loginData' => $loginData, 'errors' => $errors];
+  }
 }
