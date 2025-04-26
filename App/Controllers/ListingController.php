@@ -6,7 +6,6 @@ use Framework\Validation;
 use Framework\Session;
 
 class ListingController extends Controller {
-
   /**
    * Check if id is in DB
    *

@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 class HomeController extends Controller {
-
   /**
    * Load main page
    *

@@ -6,7 +6,6 @@ use Framework\Validation;
 use Framework\Session;
 
 class UserController extends Controller {
-
   /**
    * Show login page
    *
@@ -102,7 +101,7 @@ class UserController extends Controller {
       exit;
     } else {
       // Check if this email is not registered
-      $user = (array) $this->db->query('SELECT * FROM users WHERE email=?', [$loginData['email']])->fetch();
+      $user = $this->db->query('SELECT * FROM users WHERE email=?', [$loginData['email']])->fetch(\PDO::FETCH_ASSOC);
 
       if (!$user) {
         $errors['user'] = 'This email address is not registered on the server';
