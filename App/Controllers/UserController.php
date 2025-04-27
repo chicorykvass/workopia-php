@@ -97,7 +97,7 @@ class UserController extends Controller {
 
     // If there are errors, reload view with errors
     if (!empty($errors)) {
-      loadView('/users/login', ['errors' => $errors, 'data' => $loginData]);
+      loadView('/users/login', ['errors' => $errors, 'email' => $loginData['email']]);
       exit;
     } else {
       // Check if this email is not registered
@@ -105,11 +105,11 @@ class UserController extends Controller {
 
       if (!$user) {
         $errors['user'] = 'This email address is not registered on the server';
-        loadView('/users/login', ['errors' => $errors, 'data' => $loginData]);
+        loadView('/users/login', ['errors' => $errors, 'email' => $loginData['email']]);
         exit;
       } else if (!password_verify($loginData['password'], $user['password'])) {
         $errors['user'] = 'The password is incorrect';
-        loadView('/users/login', ['errors' => $errors, 'data' => $loginData]);
+        loadView('/users/login', ['errors' => $errors, 'email' => $loginData['email']]);
         exit;
       } else {
         unset($user['password']);

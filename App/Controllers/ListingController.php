@@ -37,6 +37,9 @@ class ListingController extends Controller {
    * @return void
    */
   public function create() {
+    if (!Session::has('user')) {
+      redirect('/');
+    }
     loadView('/listings/create');
   }
 
@@ -113,6 +116,9 @@ class ListingController extends Controller {
    * @return void
    */
   public function edit($params) {
+    if (!Session::has('user')) {
+      redirect('/');
+    }
     // Check if id is in DB
     $listing = $this->check($params['id']);
 
