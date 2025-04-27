@@ -104,11 +104,11 @@ class UserController extends Controller {
       $user = $this->db->query('SELECT * FROM users WHERE email=?', [$loginData['email']])->fetch(\PDO::FETCH_ASSOC);
 
       if (!$user) {
-        $errors['user'] = 'This email address is not registered on the server';
+        $errors['user'] = 'Incorrect credentials';
         loadView('/users/login', ['errors' => $errors, 'email' => $loginData['email']]);
         exit;
       } else if (!password_verify($loginData['password'], $user['password'])) {
-        $errors['user'] = 'The password is incorrect';
+        $errors['user'] = 'Incorrect credentials';
         loadView('/users/login', ['errors' => $errors, 'email' => $loginData['email']]);
         exit;
       } else {

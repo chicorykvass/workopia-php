@@ -9,7 +9,7 @@
         <a href="/auth/login" class="text-white hover:underline">Login</a>
         <a href="/auth/register" class="text-white hover:underline">Register</a>
       <?php else : ?>
-        <div class="flex justify-between items-center gap-4">
+        <div class="flex justify-between items-center gap-4 text-amber-400">
           <div>Welcome, <?= explode(' ', Framework\Session::get('user')['name'])[0] ?></div>
           <form method="POST" action="/auth/logout">
             <button type="submit" class="text-white inline hover:underline">
