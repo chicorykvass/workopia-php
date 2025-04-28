@@ -26,7 +26,7 @@ class ListingController extends Controller {
    * @return void
    */
   public function index() {
-    $listings = $this->db->query('SELECT id, title, description, salary, tags, city, state FROM listings')->fetchAll();
+    $listings = $this->db->query('SELECT id, title, description, salary, tags, city, state FROM listings ORDER BY id DESC')->fetchAll();
 
     loadView('listings/index', ['listings' => $listings]);
   }

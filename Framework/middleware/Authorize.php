@@ -10,7 +10,7 @@ class Authorize {
    * 
    * @return bool
    */
-  public function isAuthenticated() {
+  public static function isAuthenticated() {
     return Session::has('user');
   }
 
@@ -20,10 +20,10 @@ class Authorize {
    * @param string $role
    * @return bool
    */
-  public function handle($role) {
-    if ($role === 'guest' && $this->isAuthenticated()) {
+  public static function handle($role) {
+    if ($role === 'guest' && self::isAuthenticated()) {
       return redirect('/');
-    } elseif ($role === 'auth' && !$this->isAuthenticated()) {
+    } elseif ($role === 'auth' && !self::isAuthenticated()) {
       return redirect('/auth/login');
     }
   }

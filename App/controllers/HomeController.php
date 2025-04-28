@@ -9,7 +9,7 @@ class HomeController extends Controller {
    * @return void
    */
   public function index() {
-    $listings = $this->db->query('SELECT id, title, description, salary, tags, city, state FROM listings LIMIT 6')->fetchAll();
+    $listings = $this->db->query('SELECT id, title, description, salary, tags, city, state FROM listings ORDER BY id DESC LIMIT 6')->fetchAll();
 
     loadView('home', ['listings' => $listings]);
   }
