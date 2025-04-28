@@ -3,7 +3,7 @@
     <?= $_SESSION['success_message'] ?>
   </div>
   <?php unset($_SESSION['success_message']); ?>
-<?php elseif (isset($_SESSION['success_message'])) : ?>
+<?php elseif (isset($_SESSION['error_message'])) : ?>
   <div class="message text-red-950 bg-red-100 p-3 my-3">
     <?= $_SESSION['error_message'] ?>
   </div>

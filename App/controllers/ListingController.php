@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Framework\Validation;
 use Framework\Session;
+use Framework\Authorization;
 
 class ListingController extends Controller {
   /**
@@ -26,7 +27,7 @@ class ListingController extends Controller {
    * @return void
    */
   public function index() {
-    $listings = $this->db->query('SELECT id, title, description, salary, tags, city, state FROM listings ORDER BY id DESC')->fetchAll();
+    $listings = $this->db->query('SELECT * FROM listings ORDER BY created_at DESC')->fetchAll();
 
     loadView('listings/index', ['listings' => $listings]);
   }
@@ -96,7 +97,12 @@ class ListingController extends Controller {
     $id = $params['id'];
 
     // Check if id is in DB
-    $this->check($id);
+    $listing = $this->check($id);
+
+    if (!Authorization::isOwner($listing->user_id)) {
+      $_SESSION['error_message'] = 'You are not authorized to delete this listing';
+      redirect("/listings/{$id}");
+    }
 
     $this->db->query('DELETE FROM listings WHERE id=?', [$id]);
 
@@ -116,6 +122,11 @@ class ListingController extends Controller {
     // Check if id is in DB
     $listing = $this->check($params['id']);
 
+    if (!Authorization::isOwner($listing->user_id)) {
+      $_SESSION['error_message'] = 'You are not authorized to edit this listing';
+      redirect("/listings/{$params['id']}");
+    }
+
     loadView('listings/edit', ['listing' => (array) $listing]);
   }
 
@@ -130,6 +141,11 @@ class ListingController extends Controller {
 
     // Check if id is in DB
     $oldListingData = (array) $this->check($id);
+
+    if (!Authorization::isOwner($oldListingData['user_id'])) {
+      $_SESSION['error_message'] = 'You are not authorized to edit this listing';
+      redirect("/listings/{$params['id']}");
+    }
 
     // Validate the input data
     extract(Validation::listingFields());
