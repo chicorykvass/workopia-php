@@ -78,6 +78,43 @@ class ListingController extends Controller {
   }
 
   /**
+   * Search the listings
+   * 
+   * @param array $params
+   * @return void
+   */
+  public function search() {
+    $keywords = sanitize(trim($_GET['keywords'] ?? null));
+    $location = sanitize(trim($_GET['location'] ?? null));
+
+    $query = null;
+    $params = $listings = [];
+    $kwQuery = "title LIKE :keywords OR tags LIKE :keywords OR description LIKE :keywords OR company LIKE :keywords";
+    $locQuery = "city LIKE :location OR state LIKE :location";
+
+    if ($keywords && $location) {
+      $query = "SELECT * FROM listings WHERE ({$kwQuery}) AND ({$locQuery})";
+    } elseif ($keywords) {
+      $query = "SELECT * FROM listings WHERE {$kwQuery}";
+    } elseif ($location) {
+      $query = "SELECT * FROM listings WHERE {$locQuery}";
+    }
+
+    if ($keywords) {
+      $params['keywords'] = "%{$keywords}%";
+    }
+    if ($location) {
+      $params['location'] = "%{$location}%";
+    }
+
+    if ($query) {
+      $listings = $this->db->query($query, $params)->fetchAll();
+    }
+
+    loadView('listings/search-results', ['listings' => $listings]);
+  }
+
+  /**
    * Show listing details
    *
    * @param array $params
