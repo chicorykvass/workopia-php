@@ -70,6 +70,9 @@ class ListingController extends Controller {
 
       // Execute the SQL statement
       $this->db->query($sql, $listingData);
+
+      Session::setFlashMessage('success_message', 'Listing created successively');
+
       redirect('/listings');
     }
   }
@@ -100,14 +103,14 @@ class ListingController extends Controller {
     $listing = $this->check($id);
 
     if (!Authorization::isOwner($listing->user_id)) {
-      $_SESSION['error_message'] = 'You are not authorized to delete this listing';
+      Session::setFlashMessage('error_message', 'You are not authorized to delete this listing');
       redirect("/listings/{$id}");
     }
 
     $this->db->query('DELETE FROM listings WHERE id=?', [$id]);
 
     // Set flash message
-    $_SESSION['success_message'] = 'Listing deleted successfully';
+    Session::setFlashMessage('success_message', 'Listing deleted successfully');
 
     redirect('/listings');
   }
@@ -123,7 +126,7 @@ class ListingController extends Controller {
     $listing = $this->check($params['id']);
 
     if (!Authorization::isOwner($listing->user_id)) {
-      $_SESSION['error_message'] = 'You are not authorized to edit this listing';
+      Session::setFlashMessage('error_message', 'You are not authorized to edit this listing');
       redirect("/listings/{$params['id']}");
     }
 
@@ -143,7 +146,7 @@ class ListingController extends Controller {
     $oldListingData = (array) $this->check($id);
 
     if (!Authorization::isOwner($oldListingData['user_id'])) {
-      $_SESSION['error_message'] = 'You are not authorized to edit this listing';
+      Session::setFlashMessage('error_message', 'You are not authorized to edit this listing');
       redirect("/listings/{$params['id']}");
     }
 
@@ -176,7 +179,7 @@ class ListingController extends Controller {
       // Execute the SQL statement
       $this->db->query($sql, $qVal);
 
-      $_SESSION['success_message'] = 'Listing updated successfully';
+      Session::setFlashMessage('success_message', 'Listing updated successfully');
 
       redirect("/listings/{$id}");
     }
